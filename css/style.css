@@ -87,6 +87,15 @@ ul {
     font-style: italic;
 }
 
+.responsive-img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 20px auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
 /* Home Menu Styles */
 .home-menu {
     display: flex;
