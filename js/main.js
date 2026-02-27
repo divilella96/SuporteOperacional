@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         function getMessageDetails() {
             const phoneInput = document.getElementById('cliente-tel');
             const nameInput = document.getElementById('artigo-nome');
-            const qtdValue = document.getElementById('artigo-qtd').value;
+            const qtdValue = parseInt(document.getElementById('artigo-qtd').value) || 1;
 
             let phone = phoneInput.value.replace(/\s/g, '').trim(); // Remove spaces
             const itemName = nameInput.value.trim();
@@ -48,9 +48,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 return null;
             }
 
-            if (!itemName) {
-                alert('Por favor, insira o nome do artigo em falta.');
-                return null;
+            // Determine article details based on inputs
+            let detalheProdutos = '';
+
+            if (itemName === '') {
+                // Scenario A: Only Quantity, No Description
+                detalheProdutos = `${qtdValue} artigo(s)`;
+            } else {
+                if (qtdValue === 1) {
+                    // Scenario B: Description exists, Quantity = 1
+                    detalheProdutos = itemName;
+                } else {
+                    // Scenario C: Description exists, Quantity > 1
+                    detalheProdutos = `${qtdValue}x ${itemName}`;
+                }
             }
 
             // Phone Validation: Ensure it starts with + or 00, or add default +351
@@ -67,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
                  phone = '+' + phone.substring(2);
             }
 
-            const message = `Boa tarde, sou o responsável pela sua encomenda feita através do Pingo Doce Online. Devido à falta de stock dos seguintes artigos: ${qtdValue} unidades de ${itemName}, peço que contacte-me dentro dos próximos 5 min de forma a conseguir alinhar consigo as substituições.`;
+            const message = `Boa tarde, sou o responsável pela sua encomenda feita através do Pingo Doce Online. Devido à falta de stock dos seguintes artigos: ${detalheProdutos}, peço que contacte-me dentro dos próximos 5 min de forma a conseguir alinhar consigo as substituições.`;
 
             return { phone, message };
         }
