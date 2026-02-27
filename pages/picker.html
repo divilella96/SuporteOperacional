@@ -23,6 +23,15 @@
 <div class="container">
     <h2>Rotina do Picker</h2>
 
+    <div class="urgente-kpi">
+        <h3>🚨 NOVO PROCESSO E REGRAS DA EQUIPA</h3>
+        <p>Para melhorarmos as nossas métricas junto do Pingo Doce, as seguintes ações são obrigatórias para reverter o atual cenário de baixas métricas de loja:</p>
+        <ul>
+            <li><strong>Chegada à Loja:</strong> Publicar "EM LOJA" imediatamente no grupo.</li>
+            <li><strong>Início da Compra:</strong> "Picar" o primeiro produto imediatamente após pegar na encomenda.</li>
+        </ul>
+    </div>
+
     <div class="info-card">
         <h3>Registro Inicial da Encomenda</h3>
         <p>É essencial anotar inicialmente os dados da encomenda para garantir a reversão do processo em caso de problemas.</p>
@@ -39,6 +48,23 @@
 
     <h4>Proibido Durante o Picking (Regras de Recolha)</h4>
     <p class="warning">É fundamental que não se recolha mais de uma encomenda de cada vez ou encomendas fora do perímetro da loja. O incumprimento destas regras prejudica o nosso desempenho, podendo levar à perda de pedidos e, consequentemente, à diminuição dos vossos ganhos ao não atingirem o mínimo estipulado.</p>
+
+    <div class="comunicacao-stock">
+        <h3>Comunicação Rápida de Stock</h3>
+        <p>Use este formulário para enviar mensagens rápidas ao cliente sobre artigos em falta.</p>
+        <div class="form-group">
+            <label for="cliente-tel">Telemóvel do Cliente:</label>
+            <input type="tel" id="cliente-tel" placeholder="Ex: 912345678">
+        </div>
+        <div class="form-group">
+            <label for="artigos-falta">Artigos em Falta:</label>
+            <textarea id="artigos-falta" rows="4" placeholder="Liste os artigos em falta..."></textarea>
+        </div>
+        <div class="button-group">
+            <button id="btn-whatsapp" class="btn-msg whatsapp"><i class="fab fa-whatsapp"></i> Enviar via WhatsApp</button>
+            <button id="btn-sms" class="btn-msg sms"><i class="fas fa-sms"></i> Enviar via SMS</button>
+        </div>
+    </div>
 
     <h4>Cuidados no Processo de Recolha</h4>
     <p>O processo de picking deve ser realizado com a máxima atenção. Verifique rigorosamente as datas de validade e todos os detalhes dos produtos.</p>
