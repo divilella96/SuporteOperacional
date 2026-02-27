@@ -53,13 +53,24 @@
         <h3>Comunicação Rápida de Stock</h3>
         <p>Use este formulário para enviar mensagens rápidas ao cliente sobre artigos em falta.</p>
         <div class="form-group">
-            <label for="cliente-tel">Telemóvel do Cliente:</label>
-            <input type="tel" id="cliente-tel" placeholder="Ex: 912345678">
+            <label for="cliente-tel">Telemóvel do Cliente <small>(Insira com +351)</small>:</label>
+            <input type="tel" id="cliente-tel" placeholder="+351 912345678">
         </div>
+
+        <div class="form-group quantity-group">
+            <label>Quantidade em Falta:</label>
+            <div class="quantity-selector">
+                <button type="button" id="qtd-minus" class="qtd-btn"><i class="fas fa-minus"></i></button>
+                <input type="number" id="artigo-qtd" value="1" min="1" readonly>
+                <button type="button" id="qtd-plus" class="qtd-btn"><i class="fas fa-plus"></i></button>
+            </div>
+        </div>
+
         <div class="form-group">
-            <label for="artigos-falta">Artigos em Falta:</label>
-            <textarea id="artigos-falta" rows="4" placeholder="Liste os artigos em falta..."></textarea>
+            <label for="artigo-nome">Nome do Artigo:</label>
+            <input type="text" id="artigo-nome" placeholder="Ex: Leite Meio Gordo, Maçãs...">
         </div>
+
         <div class="button-group">
             <button id="btn-whatsapp" class="btn-msg whatsapp"><i class="fab fa-whatsapp"></i> Enviar via WhatsApp</button>
             <button id="btn-sms" class="btn-msg sms"><i class="fas fa-sms"></i> Enviar via SMS</button>
