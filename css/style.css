@@ -80,6 +80,100 @@ nav a i {
     background: #fff8f8;
 }
 
+/* Urgent KPI Styles */
+.urgente-kpi {
+    border: 2px solid #ff9800;
+    background-color: #fff3e0;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.urgente-kpi h3 {
+    color: #d84315;
+    margin-top: 0;
+}
+
+.urgente-kpi p {
+    font-weight: 500;
+}
+
+.urgente-kpi li strong {
+    color: #e65100;
+}
+
+/* Communication Stock Styles */
+.comunicacao-stock {
+    background-color: #f1f8e9;
+    border: 1px solid #c5e1a5;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.comunicacao-stock h3 {
+    color: #33691e;
+    margin-top: 0;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #558b2f;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* Ensures padding doesn't affect width */
+    font-family: inherit;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.btn-msg {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.3s;
+    font-size: 1rem;
+}
+
+.btn-msg.whatsapp {
+    background-color: #25d366;
+}
+
+.btn-msg.whatsapp:hover {
+    background-color: #128c7e;
+}
+
+.btn-msg.sms {
+    background-color: #2196f3;
+}
+
+.btn-msg.sms:hover {
+    background-color: #0b7dda;
+}
+
+
 ul {
     line-height: 1.6;
 }
@@ -168,5 +262,9 @@ ul {
     .menu-card {
         width: 100%;
         margin-bottom: 10px;
+    }
+
+    .button-group {
+        flex-direction: column;
     }
 }
