@@ -48,21 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 return null;
             }
 
-            // Determine article details based on inputs
-            let detalheProdutos = '';
-
-            if (itemName === '') {
-                // Scenario A: Only Quantity, No Description
-                detalheProdutos = `${qtdValue} artigo(s)`;
-            } else {
-                if (qtdValue === 1) {
-                    // Scenario B: Description exists, Quantity = 1
-                    detalheProdutos = itemName;
-                } else {
-                    // Scenario C: Description exists, Quantity > 1
-                    detalheProdutos = `${qtdValue}x ${itemName}`;
-                }
-            }
+            // Determine message path based on description presence
+            let message = '';
 
             // Phone Validation: Ensure it starts with + or 00, or add default +351
             if (!phone.startsWith('+') && !phone.startsWith('00')) {
@@ -78,7 +65,13 @@ document.addEventListener('DOMContentLoaded', () => {
                  phone = '+' + phone.substring(2);
             }
 
-            const message = `Boa tarde, sou o responsável pela sua encomenda feita através do Pingo Doce Online. Devido à falta de stock dos seguintes artigos: ${detalheProdutos}, peço que contacte-me dentro dos próximos 5 min de forma a conseguir alinhar consigo as substituições.`;
+            if (itemName === '') {
+                // Path 1: Description Empty -> Use Quantity
+                message = `Boa tarde, sou o responsável pela sua encomenda feita através do Pingo Doce Online. Devido à falta de stock de ${qtdValue} artigo(s), peço que contacte-me dentro dos próximos 5 min de forma a conseguir alinhar consigo as substituições.`;
+            } else {
+                // Path 2: Description Filled -> Use Free Text (Ignore Quantity)
+                message = `Boa tarde, sou o responsável pela sua encomenda feita através do Pingo Doce Online. Devido à falta de stock dos seguintes artigos: ${itemName}, peço que contacte-me dentro dos próximos 5 min de forma a conseguir alinhar consigo as substituições.`;
+            }
 
             return { phone, message };
         }

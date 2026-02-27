@@ -47,22 +47,20 @@ def verify_logic():
                 print(f"PASS: Message contains '{expected_text_part}'")
             else:
                 # Debugging: show what was actually in the relevant part of the message
+                # Updated regex to catch both "falta de stock de ..." and "falta de stock dos seguintes artigos: ..."
                 import re
-                match = re.search(r"artigos:(.*?), peço", decoded_url_normalized)
+                match = re.search(r"falta de stock (?:dos seguintes artigos:|de) (.*?), peço", decoded_url_normalized)
                 found = match.group(1) if match else "NOT FOUND"
                 print(f"FAIL: Expected '{expected_text_part}', Found '{found}'. URL: {decoded_url_normalized}")
 
             popup.close()
 
-        # Test Scenario A: Only Quantity (3), No Description -> "3 artigo(s)"
-        # Note: WhatsApp link encoding might change spaces to +, so we check for substring carefully or decode properly
-        test_scenario("912345678", 3, "", "3 artigo(s)")
+        # Test Scenario A: Only Quantity (5), No Description -> "... falta de stock de 5 artigo(s)"
+        test_scenario("912345678", 5, "", "falta de stock de 5 artigo(s)")
 
-        # Test Scenario B: Quantity 1, Description "Leite" -> "Leite" (no 1x)
-        test_scenario("912345678", 1, "Leite", "artigos: Leite, peço")
-
-        # Test Scenario C: Quantity 2, Description "Pão" -> "2x Pão"
-        test_scenario("912345678", 2, "Pão", "2x Pão")
+        # Test Scenario B: Quantity 10, Description "2 Bananas" -> "... falta de stock dos seguintes artigos: 2 Bananas"
+        # The quantity 10 should be IGNORED
+        test_scenario("912345678", 10, "2 Bananas", "falta de stock dos seguintes artigos: 2 Bananas")
 
         browser.close()
 
