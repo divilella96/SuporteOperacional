@@ -94,4 +94,104 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Slot Validator Logic
+    const imageUpload = document.getElementById('slot-image-upload');
+    const resultContainer = document.getElementById('slot-validation-result');
+    const loadingMessage = document.getElementById('loading-message');
+    const resultContent = document.getElementById('result-content');
+    const orderNumberSpan = document.getElementById('encomenda-numero');
+    const orderSlotSpan = document.getElementById('encomenda-slot');
+
+    if (imageUpload) {
+        imageUpload.addEventListener('change', async (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // Display loading
+            resultContainer.style.display = 'block';
+            loadingMessage.style.display = 'block';
+            resultContent.style.display = 'none';
+
+            try {
+                // Read image file as URL
+                const reader = new FileReader();
+                reader.onload = async (e) => {
+                    const imageUrl = e.target.result;
+
+                    try {
+                        const { data: { text } } = await Tesseract.recognize(
+                            imageUrl,
+                            'por',
+                            { logger: m => console.log(m) }
+                        );
+
+                        console.log("OCR Result:", text);
+
+                        // Extract Order Number (last 6 digits of sequence)
+                        const orderMatches = text.match(/(?<!\d)(\d{6})(?!\d)/g);
+                        const orderNumber = orderMatches ? orderMatches[orderMatches.length - 1] : "Não encontrado";
+
+                        // Extract Time
+                        const timeMatches = text.match(/(?<!\d)(\d{2}:\d{2})(?!\d)/g);
+                        let deliveryTime = "Não encontrado";
+                        let slot = "Não encontrado";
+
+                        if (timeMatches && timeMatches.length > 0) {
+                            // Find the time that matches our slots, usually the last one
+                            deliveryTime = timeMatches[timeMatches.length - 1];
+                            const timeParts = deliveryTime.split(':');
+                            const hour = parseInt(timeParts[0], 10);
+                            const minute = parseInt(timeParts[1], 10);
+                            const timeInMinutes = hour * 60 + minute;
+
+                            // Determine Store
+                            const storeSelected = document.querySelector('input[name="loja"]:checked').value;
+
+                            // Determine Slot
+                            if (storeSelected === 'sao-bento') {
+                                if (timeInMinutes >= 10 * 60 && timeInMinutes <= 13 * 60) {
+                                    slot = "10:00 - 13:00";
+                                } else if (timeInMinutes >= 14 * 60 && timeInMinutes <= 17 * 60) {
+                                    slot = "14:00 - 17:00";
+                                } else if (timeInMinutes >= 17 * 60 && timeInMinutes <= 20 * 60) {
+                                    slot = "17:00 - 20:00";
+                                } else {
+                                    slot = `Tempo ${deliveryTime} fora dos slots (São Bento)`;
+                                }
+                            } else if (storeSelected === 'rato') {
+                                if (timeInMinutes >= 9 * 60 && timeInMinutes <= 12 * 60) {
+                                    slot = "09:00 - 12:00";
+                                } else if (timeInMinutes >= 12 * 60 && timeInMinutes <= 15 * 60) {
+                                    slot = "12:00 - 15:00";
+                                } else if (timeInMinutes >= 14 * 60 && timeInMinutes <= 17 * 60) {
+                                    slot = "14:00 - 17:00";
+                                } else if (timeInMinutes >= 17 * 60 && timeInMinutes <= 20 * 60) {
+                                    slot = "17:00 - 20:00";
+                                } else {
+                                    slot = `Tempo ${deliveryTime} fora dos slots (Largo do Rato)`;
+                                }
+                            }
+                        }
+
+                        // Display result
+                        orderNumberSpan.textContent = orderNumber;
+                        orderSlotSpan.textContent = slot;
+
+                        loadingMessage.style.display = 'none';
+                        resultContent.style.display = 'block';
+                    } catch (error) {
+                        console.error("Tesseract error:", error);
+                        loadingMessage.style.display = 'none';
+                        alert("Erro ao processar imagem.");
+                    }
+                };
+                reader.readAsDataURL(file);
+            } catch (err) {
+                console.error("Error reading file:", err);
+                loadingMessage.style.display = 'none';
+                alert("Erro ao ler arquivo.");
+            }
+        });
+    }
 });
