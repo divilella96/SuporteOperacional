@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btnCopiarSlot.addEventListener('click', () => {
             const numero = orderNumberSpan.textContent;
             const slot = orderSlotSpan.textContent;
-            const textoCopiar = `Encomenda: ${numero}\nSlot: ${slot}`;
+            const textoCopiar = `${numero}\n${slot}`;
 
             navigator.clipboard.writeText(textoCopiar).then(() => {
                 alert("Dados copiados com sucesso!");
