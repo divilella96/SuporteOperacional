@@ -6,6 +6,7 @@
     <title>Picker - Portal Operacional</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 </head>
 <body>
 
@@ -48,6 +49,35 @@
 
     <h4>Proibido Durante o Picking (Regras de Recolha)</h4>
     <p class="warning">É fundamental que não se recolha mais de uma encomenda de cada vez ou encomendas fora do perímetro da loja. O incumprimento destas regras prejudica o nosso desempenho, podendo levar à perda de pedidos e, consequentemente, à diminuição dos vossos ganhos ao não atingirem o mínimo estipulado.</p>
+
+    <div class="validador-slot">
+        <h3>Validador de Slot</h3>
+        <p>Valide o slot da sua encomenda a partir de um print.</p>
+
+        <div class="form-group">
+            <label>Selecione a Loja:</label>
+            <div class="store-selection">
+                <input type="radio" id="loja-sao-bento" name="loja" value="sao-bento" checked>
+                <label for="loja-sao-bento">São Bento</label>
+
+                <input type="radio" id="loja-rato" name="loja" value="rato">
+                <label for="loja-rato">Largo do Rato</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="slot-image-upload">Subir Imagem da Encomenda:</label>
+            <input type="file" id="slot-image-upload" accept="image/*">
+        </div>
+
+        <div id="slot-validation-result" class="result-container" style="display: none; padding: 15px; margin-top: 15px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 5px;">
+            <p id="loading-message" style="display: none;">Processando imagem, por favor aguarde...</p>
+            <div id="result-content" style="display: none;">
+                <p><strong>Número da Encomenda:</strong> <span id="encomenda-numero"></span></p>
+                <p><strong>Slot Pertencente:</strong> <span id="encomenda-slot"></span></p>
+            </div>
+        </div>
+    </div>
 
     <div class="comunicacao-stock">
         <h3>Comunicação Rápida de Stock</h3>

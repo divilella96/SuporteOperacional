@@ -29,7 +29,7 @@ def verify_picker_updates():
 
             # Fill out the form
             page.fill("#cliente-tel", "912345678")
-            page.fill("#artigos-falta", "Leite, Pão, Ovos")
+            page.fill("#artigo-nome", "Leite, Pão, Ovos")
 
             # Take a screenshot of the communication section specifically
             comm_section.screenshot(path="communication_module.png")
