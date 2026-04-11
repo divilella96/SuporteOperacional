@@ -102,6 +102,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultContent = document.getElementById('result-content');
     const orderNumberSpan = document.getElementById('encomenda-numero');
     const orderSlotSpan = document.getElementById('encomenda-slot');
+    const btnCopiarSlot = document.getElementById('btn-copiar-slot');
+
+    if (btnCopiarSlot) {
+        btnCopiarSlot.addEventListener('click', () => {
+            const numero = orderNumberSpan.textContent;
+            const slot = orderSlotSpan.textContent;
+            const textoCopiar = `Encomenda: ${numero}\nSlot: ${slot}`;
+
+            navigator.clipboard.writeText(textoCopiar).then(() => {
+                alert("Dados copiados com sucesso!");
+            }).catch(err => {
+                console.error('Erro ao copiar texto: ', err);
+                alert("Erro ao copiar dados.");
+            });
+        });
+    }
 
     if (imageUpload) {
         imageUpload.addEventListener('change', async (event) => {
