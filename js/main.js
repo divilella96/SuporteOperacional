@@ -102,6 +102,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultContent = document.getElementById('result-content');
     const orderNumberSpan = document.getElementById('encomenda-numero');
     const orderSlotSpan = document.getElementById('encomenda-slot');
+    const btnCopiarSlot = document.getElementById('btn-copiar-slot');
+
+    if (btnCopiarSlot) {
+        btnCopiarSlot.addEventListener('click', () => {
+            const numero = orderNumberSpan.textContent;
+            const slot = orderSlotSpan.textContent;
+            const textoCopiar = `Encomenda: ${numero}\nSlot: ${slot}`;
+
+            navigator.clipboard.writeText(textoCopiar).then(() => {
+                alert("Dados copiados com sucesso!");
+            }).catch(err => {
+                console.error('Erro ao copiar texto: ', err);
+                alert("Erro ao copiar dados.");
+            });
+        });
+    }
 
     if (imageUpload) {
         imageUpload.addEventListener('change', async (event) => {
@@ -142,31 +158,29 @@ document.addEventListener('DOMContentLoaded', () => {
                             deliveryTime = timeMatches[timeMatches.length - 1];
                             const timeParts = deliveryTime.split(':');
                             const hour = parseInt(timeParts[0], 10);
-                            const minute = parseInt(timeParts[1], 10);
-                            const timeInMinutes = hour * 60 + minute;
 
                             // Determine Store
                             const storeSelected = document.querySelector('input[name="loja"]:checked').value;
 
                             // Determine Slot
                             if (storeSelected === 'sao-bento') {
-                                if (timeInMinutes >= 10 * 60 && timeInMinutes <= 13 * 60) {
+                                if (hour >= 10 && hour <= 13) {
                                     slot = "10:00 - 13:00";
-                                } else if (timeInMinutes >= 14 * 60 && timeInMinutes <= 17 * 60) {
+                                } else if (hour >= 14 && hour <= 17) {
                                     slot = "14:00 - 17:00";
-                                } else if (timeInMinutes >= 17 * 60 && timeInMinutes <= 20 * 60) {
+                                } else if (hour >= 17 && hour <= 20) {
                                     slot = "17:00 - 20:00";
                                 } else {
                                     slot = `Tempo ${deliveryTime} fora dos slots (São Bento)`;
                                 }
                             } else if (storeSelected === 'rato') {
-                                if (timeInMinutes >= 9 * 60 && timeInMinutes <= 12 * 60) {
+                                if (hour >= 9 && hour <= 12) {
                                     slot = "09:00 - 12:00";
-                                } else if (timeInMinutes >= 12 * 60 && timeInMinutes <= 15 * 60) {
+                                } else if (hour >= 12 && hour <= 15) {
                                     slot = "12:00 - 15:00";
-                                } else if (timeInMinutes >= 14 * 60 && timeInMinutes <= 17 * 60) {
+                                } else if (hour >= 14 && hour <= 17) {
                                     slot = "14:00 - 17:00";
-                                } else if (timeInMinutes >= 17 * 60 && timeInMinutes <= 20 * 60) {
+                                } else if (hour >= 17 && hour <= 20) {
                                     slot = "17:00 - 20:00";
                                 } else {
                                     slot = `Tempo ${deliveryTime} fora dos slots (Largo do Rato)`;
