@@ -136,11 +136,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     const imageUrl = e.target.result;
 
                     try {
-                        const { data: { text } } = await Tesseract.recognize(
-                            imageUrl,
-                            'por',
-                            { logger: m => console.log(m) }
-                        );
+                        const worker = await Tesseract.createWorker('por', 1, {
+                            logger: m => console.log(m)
+                        });
+                        const { data: { text } } = await worker.recognize(imageUrl);
+                        await worker.terminate();
 
                         console.log("OCR Result:", text);
 
