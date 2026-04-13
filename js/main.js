@@ -145,15 +145,27 @@ document.addEventListener('DOMContentLoaded', () => {
                         console.log("OCR Result:", text);
 
                         // Extract Order Number (last 6 digits of sequence)
-                        const orderMatches = text.match(/(?<!\d)(\d{6})(?!\d)/g);
-                        const orderNumber = orderMatches ? orderMatches[orderMatches.length - 1] : "Não encontrado";
+                        // Using (?:^|[^\d]) instead of lookbehind (?<!\d) for better mobile browser compatibility
+                        const orderRegex = /(?:^|[^\d])(\d{6})(?!\d)/g;
+                        let orderMatches = [];
+                        let match;
+                        while ((match = orderRegex.exec(text)) !== null) {
+                            orderMatches.push(match[1]);
+                        }
+                        const orderNumber = orderMatches.length > 0 ? orderMatches[orderMatches.length - 1] : "Não encontrado";
 
                         // Extract Time
-                        const timeMatches = text.match(/(?<!\d)(\d{2}:\d{2})(?!\d)/g);
+                        // Using (?:^|[^\d]) instead of lookbehind (?<!\d) for better mobile browser compatibility
+                        const timeRegex = /(?:^|[^\d])(\d{2}:\d{2})(?!\d)/g;
+                        let timeMatches = [];
+                        while ((match = timeRegex.exec(text)) !== null) {
+                            timeMatches.push(match[1]);
+                        }
+
                         let deliveryTime = "Não encontrado";
                         let slot = "Não encontrado";
 
-                        if (timeMatches && timeMatches.length > 0) {
+                        if (timeMatches.length > 0) {
                             // Find the time that matches our slots, usually the last one
                             deliveryTime = timeMatches[timeMatches.length - 1];
                             const timeParts = deliveryTime.split(':');
