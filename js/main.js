@@ -176,23 +176,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
                             // Determine Slot
                             if (storeSelected === 'sao-bento') {
-                                if (hour >= 10 && hour <= 13) {
+                                if (hour === 11 || hour === 12) {
                                     slot = "10:00 - 13:00";
-                                } else if (hour >= 14 && hour <= 17) {
+                                } else if (hour === 15 || hour === 16) {
                                     slot = "14:00 - 17:00";
-                                } else if (hour >= 17 && hour <= 20) {
+                                } else if (hour === 18 || hour === 19) {
                                     slot = "17:00 - 20:00";
                                 } else {
                                     slot = `Tempo ${deliveryTime} fora dos slots (São Bento)`;
                                 }
                             } else if (storeSelected === 'rato') {
-                                if (hour >= 9 && hour <= 12) {
+                                if (hour === 10 || hour === 11) {
                                     slot = "09:00 - 12:00";
-                                } else if (hour >= 12 && hour <= 15) {
+                                } else if (hour === 13 || hour === 14) {
                                     slot = "12:00 - 15:00";
-                                } else if (hour >= 14 && hour <= 17) {
+                                } else if (hour === 15 || hour === 16) {
                                     slot = "14:00 - 17:00";
-                                } else if (hour >= 17 && hour <= 20) {
+                                } else if (hour === 18 || hour === 19) {
                                     slot = "17:00 - 20:00";
                                 } else {
                                     slot = `Tempo ${deliveryTime} fora dos slots (Largo do Rato)`;
