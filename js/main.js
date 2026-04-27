@@ -154,48 +154,95 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                         const orderNumber = orderMatches.length > 0 ? orderMatches[orderMatches.length - 1] : "Não encontrado";
 
-                        // Extract Time
-                        // Using (?:^|[^\d]) instead of lookbehind (?<!\d) for better mobile browser compatibility
-                        const timeRegex = /(?:^|[^\d])(\d{2}:\d{2})(?!\d)/g;
+                        // Extract Time Range
+                        // Look for a time range like "13:00 - 16:00" or "12:00-15:00"
+                        const timeRegex = /(\d{2}):\d{2}\s*-\s*(\d{2}):\d{2}/g;
                         let timeMatches = [];
                         while ((match = timeRegex.exec(text)) !== null) {
-                            timeMatches.push(match[1]);
+                            timeMatches.push({
+                                full: match[0],
+                                startHour: parseInt(match[1], 10),
+                                endHour: parseInt(match[2], 10)
+                            });
                         }
 
                         let deliveryTime = "Não encontrado";
                         let slot = "Não encontrado";
 
                         if (timeMatches.length > 0) {
-                            // Find the time that matches our slots, usually the last one
-                            deliveryTime = timeMatches[timeMatches.length - 1];
-                            const timeParts = deliveryTime.split(':');
-                            const hour = parseInt(timeParts[0], 10);
+                            // Find the time range that matches our slots, usually the last one
+                            const lastMatch = timeMatches[timeMatches.length - 1];
+                            deliveryTime = lastMatch.full;
+                            let startHour = lastMatch.startHour;
+                            let endHour = lastMatch.endHour;
 
                             // Determine Store
                             const storeSelected = document.querySelector('input[name="loja"]:checked').value;
 
-                            // Determine Slot
+                            // Adjust and Determine Slot
                             if (storeSelected === 'sao-bento') {
-                                if (hour === 11 || hour === 12) {
+                                // Valid start hours for São Bento: 10, 14, 17
+                                // If it comes with +1 hour, we reduce 1
+                                if (startHour === 11 || startHour === 10) {
                                     slot = "10:00 - 13:00";
-                                } else if (hour === 15 || hour === 16) {
+                                } else if (startHour === 15 || startHour === 14) {
                                     slot = "14:00 - 17:00";
-                                } else if (hour === 18 || hour === 19) {
+                                } else if (startHour === 18 || startHour === 17) {
                                     slot = "17:00 - 20:00";
                                 } else {
                                     slot = `Tempo ${deliveryTime} fora dos slots (São Bento)`;
                                 }
                             } else if (storeSelected === 'rato') {
-                                if (hour === 10 || hour === 11) {
+                                // Valid start hours for Largo do Rato: 9, 12, 14, 17
+                                // If it comes with +1 hour, we reduce 1
+                                if (startHour === 10 || startHour === 9) {
                                     slot = "09:00 - 12:00";
-                                } else if (hour === 13 || hour === 14) {
+                                } else if (startHour === 13 || startHour === 12) {
                                     slot = "12:00 - 15:00";
-                                } else if (hour === 15 || hour === 16) {
+                                } else if (startHour === 15 || startHour === 14) {
                                     slot = "14:00 - 17:00";
-                                } else if (hour === 18 || hour === 19) {
+                                } else if (startHour === 18 || startHour === 17) {
                                     slot = "17:00 - 20:00";
                                 } else {
                                     slot = `Tempo ${deliveryTime} fora dos slots (Largo do Rato)`;
+                                }
+                            }
+                        } else {
+                            // Fallback if no range is found but a single time might exist
+                            const singleTimeRegex = /(?:^|[^\d])(\d{2}:\d{2})(?!\d)/g;
+                            let singleTimeMatches = [];
+                            while ((match = singleTimeRegex.exec(text)) !== null) {
+                                singleTimeMatches.push(match[1]);
+                            }
+
+                            if (singleTimeMatches.length > 0) {
+                                deliveryTime = singleTimeMatches[singleTimeMatches.length - 1];
+                                const hour = parseInt(deliveryTime.split(':')[0], 10);
+                                const storeSelected = document.querySelector('input[name="loja"]:checked').value;
+
+                                // Apply the same logic falling back to start hour
+                                if (storeSelected === 'sao-bento') {
+                                    if (hour === 11 || hour === 10) {
+                                        slot = "10:00 - 13:00";
+                                    } else if (hour === 15 || hour === 14) {
+                                        slot = "14:00 - 17:00";
+                                    } else if (hour === 18 || hour === 17) {
+                                        slot = "17:00 - 20:00";
+                                    } else {
+                                        slot = `Tempo ${deliveryTime} fora dos slots (São Bento)`;
+                                    }
+                                } else if (storeSelected === 'rato') {
+                                    if (hour === 10 || hour === 9) {
+                                        slot = "09:00 - 12:00";
+                                    } else if (hour === 13 || hour === 12) {
+                                        slot = "12:00 - 15:00";
+                                    } else if (hour === 15 || hour === 14) {
+                                        slot = "14:00 - 17:00";
+                                    } else if (hour === 18 || hour === 17) {
+                                        slot = "17:00 - 20:00";
+                                    } else {
+                                        slot = `Tempo ${deliveryTime} fora dos slots (Largo do Rato)`;
+                                    }
                                 }
                             }
                         }
